@@ -4,6 +4,7 @@ import {
   GET_STYLES_FAILURE,
   UPDATE_CURRENT_STYLE_SUCCESS,
 } from './types';
+import { PRODUCTS_API_URL } from '../../constants';
 
 export const getStyles = () => ({
   type: GET_STYLES,
@@ -21,7 +22,7 @@ export const getStylesFailure = (err) => ({
 
 export const fetchStyles = (productId) => (dispatch) => {
   dispatch(getStyles());
-  fetch(`http://18.224.200.47/products/${productId}/styles`)
+  fetch(`${PRODUCTS_API_URL}/products/${productId}/styles`)
     .then((res) => res.json())
     .then((data) => {
       dispatch(getStylesSuccess(data));

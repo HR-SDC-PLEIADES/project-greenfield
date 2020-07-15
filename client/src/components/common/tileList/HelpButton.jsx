@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../../../redux/actions/questionActions';
 import { updateHelpful } from '../../../redux/actions/helpfulAction';
+import { QA_API_URL } from '../../../constants';
 
 const HelpButton = ({ widget, data, update, id, clicked, helpIds }) => {
   const dataId = helpIds.filter(
@@ -11,16 +12,16 @@ const HelpButton = ({ widget, data, update, id, clicked, helpIds }) => {
   const handleClick = (e) => {
     e.preventDefault();
     if (widget === 'qa' && !dataBool) {
-      fetch(`http://18.224.200.47/qa/question/${data.question_id}/helpful`, {
+      fetch(`${QA_API_URL}/qa/question/${data.question_id}/helpful`, {
         method: 'PUT',
       })
         .then(() => {
           update(id);
           setTimeout(() => clicked(data.question_id), 150);
         })
-        .catch((err) => console.log('Helpful update error'));
+        .catch((err) => console.log(err));
     } else if (widget === 'answer' && !dataBool) {
-      fetch(`http://18.224.200.47/qa/answer/${data.id}/helpful`, {
+      fetch(`${QA_API_URL}/qa/answer/${data.id}/helpful`, {
         method: 'PUT',
       })
         .then(() => {
@@ -31,9 +32,12 @@ const HelpButton = ({ widget, data, update, id, clicked, helpIds }) => {
     }
   };
   return (
-    <div className='help-div'>
+    <div className="help-div">
       Helpful?
-      <a href='' onClick={handleClick} className='yes-btn'> Yes</a>
+      <button type="button" onClick={handleClick} className="yes-btn">
+        {' '}
+        Yes
+      </button>
       ({data.question_helpfulness || data.helpfulness})
     </div>
   );
