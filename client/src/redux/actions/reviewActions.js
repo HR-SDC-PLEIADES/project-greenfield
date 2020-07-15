@@ -5,6 +5,7 @@ import {
   UPDATE_REVIEWS_COUNT,
   UPDATE_REVIEWS_SORT,
 } from './types';
+import { REVIEWS_API_URL } from '../../constants';
 
 export const getReviews = () => ({
   type: GET_REVIEWS,
@@ -23,16 +24,18 @@ export const getReviewsFailure = (error) => ({
 export const updateCount = (count) => ({
   type: UPDATE_REVIEWS_COUNT,
   payload: count,
-})
+});
 
 export const updateSort = (sort) => ({
   type: UPDATE_REVIEWS_SORT,
   payload: sort,
 });
 
-export const fetchReviews = (count = 2, id, sort = 'relevant') => (dispatch) => {
+export const fetchReviews = (count = 2, id, sort = 'relevant') => (
+  dispatch
+) => {
   dispatch(getReviews());
-  fetch(`http://18.224.200.47/reviews/${id}/list?count=${count}&sort=${sort}`)
+  fetch(`${REVIEWS_API_URL}/reviews/${id}/list?count=${count}&sort=${sort}`)
     .then((res) => res.json())
     .then((data) => dispatch(getReviewsSuccess(data)))
     .catch((err) => dispatch(getReviewsFailure(err)));
@@ -40,8 +43,8 @@ export const fetchReviews = (count = 2, id, sort = 'relevant') => (dispatch) => 
 
 export const updateReviewCount = (count) => (dispatch) => {
   dispatch(updateCount(count));
-}
+};
 
 export const updateReviewSort = (sort) => (dispatch) => {
   dispatch(updateSort(sort));
-}
+};

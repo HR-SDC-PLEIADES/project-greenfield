@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Modal, TextField, makeStyles, Button } from '@material-ui/core';
 import { fetchQuestions } from '../../../redux/actions/questionActions';
+import { QA_API_URL } from '../../../constants';
 
 const AddQuestion = ({ open, handleClose, name, id, update }) => {
   const [email, setEmail] = React.useState('');
@@ -11,36 +12,37 @@ const AddQuestion = ({ open, handleClose, name, id, update }) => {
   const [emailErr, setEmailErr] = React.useState(false);
   const [questErr, setQuestErr] = React.useState(false);
 
-  const handleChange = (stateName, e) => {
-    let value = e.target.value
-    if (stateName === email)  setEmail(value);
-    else if (stateName === nickname)  setName(value);
-    else if (stateName === question)  setQuestion(value);
-
-    if(nickname.length > 1 ) handleErrorChange(nickname, false)
-    if(question.length > 1 ) handleErrorChange(question, false)
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(!re.test(String(email).toLowerCase()) || email.length > 1) handleErrorChange(email, false)
-
-
-  };
-  
   const handleErrorChange = (stateName, bool) => {
     if (stateName === email) return setEmailErr(bool);
-    else if (stateName === nickname) return setNameErr(bool);
-    else if (stateName === question) return setQuestErr(bool);
-    
-  }
+    if (stateName === nickname) return setNameErr(bool);
+    if (stateName === question) return setQuestErr(bool);
+  };
+
+  const handleChange = (stateName, e) => {
+    const { value } = e.target;
+    if (stateName === email) setEmail(value);
+    else if (stateName === nickname) setName(value);
+    else if (stateName === question) setQuestion(value);
+
+    if (nickname.length > 1) handleErrorChange(nickname, false);
+    if (question.length > 1) handleErrorChange(question, false);
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(String(email).toLowerCase()) || email.length > 1) {
+      handleErrorChange(email, false);
+    }
+  };
 
   useEffect(() => {
-    if(nickname.length < 1 ) setNameErr(true)
-    if(question.length < 1 ) setQuestErr(true)
+    if (nickname.length < 1) setNameErr(true);
+    if (question.length < 1) setQuestErr(true);
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(!re.test(String(email).toLowerCase()) || email.length < 1) setEmailErr(true)
-  })
-  
+    if (!re.test(String(email).toLowerCase()) || email.length < 1) {
+      setEmailErr(true);
+    }
+  });
+
   const handleClick = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const data = {
       body: question,
       name: nickname,
@@ -48,7 +50,7 @@ const AddQuestion = ({ open, handleClose, name, id, update }) => {
     };
     setTimeout(() => {
       if (emailErr === false && nameErr === false && questErr === false) {
-        fetch(`http://18.224.200.47/qa/${id}`, {
+        fetch(`${QA_API_URL}/qa/${id}`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -103,35 +105,40 @@ const AddQuestion = ({ open, handleClose, name, id, update }) => {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 id='simple-modal-title'>Ask Your Question</h2>
-      <p id='simple-modal-description'>
+      <h2 id="simple-modal-title">Ask Your Question</h2>
+      <p id="simple-modal-description">
         About the
         {name}
       </p>
       <br />
-      <form className={classesText.root} noValidate autoComplete='off' onSubmit={handleClick} >
+      <form
+        className={classesText.root}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleClick}
+      >
         {!nameErr ? (
           <TextField
             required
-            id='outlined-basic-nickname'
-            label='Nickname'
-            helperText='For privacy reasons, do not use your full name or email address'
-            variant='outlined'
-            placeholder='Example: jackson11!'
+            id="outlined-basic-nickname"
+            label="Nickname"
+            helperText="For privacy reasons, do not use your full name or email address"
+            variant="outlined"
+            placeholder="Example: jackson11!"
             inputProps={{ maxLength: 60, minLength: 3 }}
-            onChange={() => handleChange(nickname, event)}
+            onChange={(e) => handleChange(nickname, e)}
             fullWidth
           />
         ) : (
           <TextField
             error
-            id='outlined-basic-nickname'
-            label='Nickname'
-            helperText='You must enter the following: Nickname'
-            variant='outlined'
-            placeholder='Example: jackson11!'
+            id="outlined-basic-nickname"
+            label="Nickname"
+            helperText="You must enter the following: Nickname"
+            variant="outlined"
+            placeholder="Example: jackson11!"
             inputProps={{ maxLength: 60, minLength: 3 }}
-            onChange={() => handleChange(nickname, event)}
+            onChange={(e) => handleChange(nickname, e)}
             fullWidth
           />
         )}
@@ -140,25 +147,25 @@ const AddQuestion = ({ open, handleClose, name, id, update }) => {
         {!emailErr ? (
           <TextField
             required
-            id='outlined-basic-email'
-            label='Email'
-            helperText='For authentication reasons, you will not be emailed'
-            placeholder='Why did you like the product or not?'
-            variant='outlined'
+            id="outlined-basic-email"
+            label="Email"
+            helperText="For authentication reasons, you will not be emailed"
+            placeholder="Why did you like the product or not?"
+            variant="outlined"
             inputProps={{ maxLength: 60, minLength: 6 }}
-            onChange={() => handleChange(email, event)}
+            onChange={(e) => handleChange(email, e)}
             fullWidth
           />
         ) : (
           <TextField
             error
-            id='outlined-basic-email'
-            label='Email'
-            helperText='You must enter the following: Valid email'
-            placeholder='Why did you like the product or not?'
-            variant='outlined'
+            id="outlined-basic-email"
+            label="Email"
+            helperText="You must enter the following: Valid email"
+            placeholder="Why did you like the product or not?"
+            variant="outlined"
             inputProps={{ maxLength: 60, minLength: 6 }}
-            onChange={() => handleChange(email, event)}
+            onChange={(e) => handleChange(email, e)}
             fullWidth
           />
         )}
@@ -166,29 +173,34 @@ const AddQuestion = ({ open, handleClose, name, id, update }) => {
         {!questErr ? (
           <TextField
             required
-            id='outlined-multiline-static'
-            label='Enter Question..'
+            id="outlined-multiline-static"
+            label="Enter Question.."
             multiline
             rows={2}
-            variant='outlined'
+            variant="outlined"
             inputProps={{ maxLength: 1000, minLength: 50 }}
-            onChange={() => handleChange(question, event)}
+            onChange={(e) => handleChange(question, e)}
           />
         ) : (
           <TextField
             error
-            id='outlined-multiline-static'
-            label='You Must enter the following: Valid Question'
+            id="outlined-multiline-static"
+            label="You Must enter the following: Valid Question"
             multiline
             rows={2}
-            variant='outlined'
+            variant="outlined"
             inputProps={{ maxLength: 1000, minLength: 50 }}
-            onChange={() => handleChange(question, event)}
+            onChange={(e) => handleChange(question, e)}
           />
         )}
       </form>
       <br />
-      <Button type='submit' variant='contained' size='medium' onClick={handleClick}>
+      <Button
+        type="submit"
+        variant="contained"
+        size="medium"
+        onClick={handleClick}
+      >
         Submit
       </Button>
     </div>
@@ -199,8 +211,8 @@ const AddQuestion = ({ open, handleClose, name, id, update }) => {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby='simple-modal-title'
-        aria-describedby='simple-modal-description'
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
         style={{
           display: 'flex',
           alignItems: 'center',

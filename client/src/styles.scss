@@ -726,25 +726,27 @@ a.show-btn:hover {
   padding-left: 15px;
   padding-right: 13px;
 }
+.report-div {
+  margin: 0;
+}
 .yes-btn {
   padding-left: 5px;
   padding-right: 2px;
 }
 
-a.yes-btn:link,
-a.yes-btn:active,
-a.yes-btn:visited {
+.yes-btn,
+a.helpful-on {
   color: $primary-color;
+  text-decoration: underline;
 }
-a.yes-btn:hover {
+.yes-btn:hover {
   color: $light-color;
 }
-a.report-btn:link,
-a.report-btn:active,
-a.report-btn:visited {
+.report-btn {
   color: $primary-color;
+  text-decoration: underline;
 }
-a.report-btn:hover {
+.report-btn:hover {
   color: $light-color;
 }
 .a-photos {

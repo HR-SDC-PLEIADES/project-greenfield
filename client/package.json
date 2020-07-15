@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm dist/bundle.js",
     "build-dev": "webpack -d --watch --mode development",
-    "build-prod": "webpack -p --mode production",
+    "build-prod": "webpack -p",
     "test": "jest ",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watchAll",

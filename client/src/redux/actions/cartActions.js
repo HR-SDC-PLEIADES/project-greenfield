@@ -1,4 +1,5 @@
 import { GET_CART, GET_CART_SUCCESS, GET_CART_FAILURE } from './types';
+import { CART_API_URL } from '../../constants';
 
 export const getCart = () => ({
   type: GET_CART,
@@ -15,7 +16,7 @@ export const getCartFailure = () => ({
 
 export const fetchCart = (userToken) => (dispatch) => {
   dispatch(getCart());
-  fetch(`http://18.224.200.47/cart/${userToken}`)
+  fetch(`${CART_API_URL}/cart/${userToken}`)
     .then((res) => res.json())
     .then((data) => dispatch(getCartSuccess(data)))
     .catch((err) => dispatch(getCartFailure(err)));
@@ -24,7 +25,7 @@ export const fetchCart = (userToken) => (dispatch) => {
 export const addToCart = (userToken, skuId) => (dispatch) => {
   console.log(`ut: ${userToken}, sku: ${skuId}`);
   dispatch(getCart());
-  fetch('http://18.224.200.47/cart', {
+  fetch(`${CART_API_URL}/cart`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -3,6 +3,7 @@ import {
   GET_QUESTIONS_SUCCESS,
   GET_QUESTIONS_FAILURE,
 } from './types';
+import { QA_API_URL } from '../../constants';
 
 export const getQuestions = () => ({
   type: GET_QUESTIONS,
@@ -18,10 +19,9 @@ export const getQuestionsFailure = (err) => ({
   payload: err,
 });
 
-
-export const fetchQuestions = (product_id) => (dispatch) => {
+export const fetchQuestions = (productId) => (dispatch) => {
   dispatch(getQuestions());
-  fetch(`http://18.224.200.47/qa/${product_id}/`)
+  fetch(`${QA_API_URL}/qa/${productId}/`)
     .then((res) => res.json())
     .then((data) => dispatch(getQuestionsSuccess(data)))
     .catch((err) => dispatch(getQuestionsFailure(err)));
